@@ -10,25 +10,50 @@ using BepInEx.Logging;
 
 namespace GHPluginCoreLib
 {
+	/// <summary>
+	/// The GHPluginLogger class allows you to log messages to the BepInEx console. It
+	/// contains various helper methods to make logging much more convenient.
+	/// </summary>
 	public class GHPluginLogger
 	{
 		private ManualLogSource logger = null;
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="sourceName"></param>
 		public GHPluginLogger(string sourceName = "GH Plugin Logger")
 		{
 			this.logger = BepInEx.Logging.Logger.CreateLogSource(sourceName);
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="logger"></param>
 		public GHPluginLogger(ManualLogSource logger)
 		{
 			this.logger = logger;
 		}
 
+		/// <summary>
+		/// Logs a message to the BepInEx debug console.
+		/// </summary>
+		/// <param name="msg"></param>
 		public void LogInfo(string msg)
 		{
 			this.logger.LogInfo(msg);
 		}
 
+		/// <summary>
+		/// Logs all properties of a GameObject by default. It can also be used to log
+		/// all properties of the GameObject and its children. The third parameter can be
+		/// used to specify which properties of the GameObjects being logged should not
+		/// be logged to the BepInEx debug console.
+		/// </summary>
+		/// <param name="gameObject"></param>
+		/// <param name="logDataOfAllChildGameObjects"></param>
+		/// <param name="propertyNamesFilter"></param>
 		public void LogAllGameObjectData(GameObject gameObject, bool logDataOfAllChildGameObjects, List<string> propertyNamesFilter = null)
 		{
 			this.logger.LogInfo("Current GameObject: " + gameObject);
@@ -80,6 +105,12 @@ namespace GHPluginCoreLib
 			}
 		}
 
+		/// <summary>
+		/// Logs all properties for a Scene in the game, the second parameter specifies whether
+		/// the properties of all GameObjects in the Scene should be logged as well.
+		/// </summary>
+		/// <param name="scene"></param>
+		/// <param name="logAllSceneObjectsData"></param>
 		public void LogSceneData(Scene scene, bool logAllSceneObjectsData)
 		{
 			foreach (PropertyDescriptor propertyDescriptor in TypeDescriptor.GetProperties(scene))
@@ -98,11 +129,24 @@ namespace GHPluginCoreLib
 			}
 		}
 
+		/// <summary>
+		/// Logs all properties for the currently active Scene in the game, the second
+		/// parameter specifies whether the properties of all GameObjects in the Scene
+		/// should be logged as well.
+		/// </summary>
+		/// <param name="logAllSceneObjectsData"></param>
 		public void LogActiveSceneData(bool logAllSceneObjectsData)
 		{
 			this.LogSceneData(SceneManager.GetActiveScene(), logAllSceneObjectsData);
 		}
 
+		/// <summary>
+		/// Logs the name of a GameObject as well as the name of its parent, the second
+		/// parameter specifies whether the same should be done for the children of the
+		/// GameObject specified in the first parameter.
+		/// </summary>
+		/// <param name="gameObject"></param>
+		/// <param name="logChildObjects"></param>
 		public void LogGameObjectNameAndParent(GameObject gameObject, bool logChildObjects)
 		{
 			this.logger.LogInfo("Current GameObject: " + gameObject);
@@ -127,6 +171,11 @@ namespace GHPluginCoreLib
 			}
 		}
 
+		/// <summary>
+		/// Logs the names of all the GameObjects in a Scene in the game as well as the names
+		/// of their parents.
+		/// </summary>
+		/// <param name="scene"></param>
 		public void LogSceneGameObjectsNameAndParent(Scene scene)
 		{
 			foreach (GameObject rootGameObject in scene.GetRootGameObjects())
@@ -135,11 +184,19 @@ namespace GHPluginCoreLib
 			}
 		}
 
+		/// <summary>
+		/// Logs the names of all the GameObjects in the currently active Scene in the game
+		/// as well as the names of their parents.
+		/// </summary>
 		public void LogActiveSceneGameObjectsNameAndParent()
 		{
 			this.LogSceneGameObjectsNameAndParent(SceneManager.GetActiveScene());
 		}
 
+		/// <summary>
+		/// Logs the names of all the folders and files in a FileSystem instance.
+		/// </summary>
+		/// <param name="fileSystem"></param>
 		public void LogFileSystem(FileSystem fileSystem)
 		{
 			FileSystem.Carpeta rootFolder = fileSystem.GetCarpetaRaiz();
@@ -152,6 +209,11 @@ namespace GHPluginCoreLib
 			}
 		}
 
+		/// <summary>
+		/// Logs the name of the FileSystem.Carpeta instance specified in the first parameter
+		/// as well as the name of all its subfolders and files.
+		/// </summary>
+		/// <param name="folder"></param>
 		public void LogFolder(FileSystem.Carpeta folder)
 		{
 			this.LogInfo("Folder name: " + folder.nombre);
@@ -167,6 +229,10 @@ namespace GHPluginCoreLib
 			}
 		}
 
+		/// <summary>
+		/// Logs information about an exception, including its message and its stack trace.
+		/// </summary>
+		/// <param name="exception"></param>
 		public void LogException(Exception exception)
 		{
 			this.LogInfo("Exception occurred.");

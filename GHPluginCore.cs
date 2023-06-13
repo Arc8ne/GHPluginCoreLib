@@ -18,17 +18,33 @@ using static Miniscript.Intrinsic;
 
 namespace GHPluginCoreLib
 {
+	/// <summary>
+	/// The GHPluginCore class can be inherited from by your BepInEx plugin, however it is
+	/// not mandatory for your BepInEx plugin to inherit from this class.
+	/// The GHPluginCore class is responsible for implementing and exposing the functionality
+	/// that this library offers (e.g. the ability to create and implement custom
+	/// programs that can be used in GreyOS). It can be accessed through its "instance" field.
+	/// </summary>
     public class GHPluginCore
     {
         private const string harmonyID = "gh.plugin.core";
 
         private Harmony harmony = new Harmony(harmonyID);
 
+		internal GHPluginLogger logger = new GHPluginLogger("GH Plugin Core");
+
+		/// <summary>
+		/// An instance of the GHPluginCore class which can be used to access instances of
+		/// other classes like the GreyOSProgramManager.
+		/// </summary>
 		public static readonly GHPluginCore instance = new GHPluginCore();
 
+		/// <summary>
+		/// An instance of the GreyOSProgramManager, which allows you to register custom
+		/// programs that can be executed and used in GreyOS, the operating system which
+		/// a player's in-game computer runs on.
+		/// </summary>
 		public readonly GreyOSProgramManager greyOSProgramManager = new GreyOSProgramManager();
-
-        public readonly GHPluginLogger logger = new GHPluginLogger("GH Plugin Core");
 
         private GHPluginCore()
         {
@@ -238,9 +254,14 @@ namespace GHPluginCoreLib
 			);
 		}
 
+		/// <summary>
+		/// This method must be called in the Awake method of your BepInEx plugin,
+		/// preferably at the start of it if possible. It is responsible for executing crucial
+		/// initialization procedures to ensure that the library works correctly.
+		/// </summary>
 		public void Init()
 		{
-            this.ApplyCorePatches();
+			this.ApplyCorePatches();
 
 			this.logger.LogInfo("All methods patched successfully.");
 		}

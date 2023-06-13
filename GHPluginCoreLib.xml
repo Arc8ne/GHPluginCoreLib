@@ -1,0 +1,272 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GHPluginCoreLib</name>
+    </assembly>
+    <members>
+        <member name="T:GHPluginCoreLib.GHPluginCore">
+            <summary>
+            The GHPluginCore class can be inherited from by your BepInEx plugin, however it is
+            not mandatory for your BepInEx plugin to inherit from this class.
+            The GHPluginCore class is responsible for implementing and exposing the functionality
+            that this library offers (e.g. the ability to create and implement custom
+            programs that can be used in GreyOS). It can be accessed through its "instance" field.
+            </summary>
+        </member>
+        <member name="F:GHPluginCoreLib.GHPluginCore.instance">
+            <summary>
+            An instance of the GHPluginCore class which can be used to access instances of
+            other classes like the GreyOSProgramManager.
+            </summary>
+        </member>
+        <member name="F:GHPluginCoreLib.GHPluginCore.greyOSProgramManager">
+            <summary>
+            An instance of the GreyOSProgramManager, which allows you to register custom
+            programs that can be executed and used in GreyOS, the operating system which
+            a player's in-game computer runs on.
+            </summary>
+        </member>
+        <member name="M:GHPluginCoreLib.GHPluginCore.Init">
+            <summary>
+            This method must be called in the Awake method of your BepInEx plugin,
+            preferably at the start of it if possible. It is responsible for executing crucial
+            initialization procedures to ensure that the library works correctly.
+            </summary>
+        </member>
+        <member name="T:GHPluginCoreLib.GHPluginLogger">
+            <summary>
+            The GHPluginLogger class allows you to log messages to the BepInEx console. It
+            contains various helper methods to make logging much more convenient.
+            </summary>
+        </member>
+        <member name="M:GHPluginCoreLib.GHPluginLogger.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="sourceName"></param>
+        </member>
+        <member name="M:GHPluginCoreLib.GHPluginLogger.#ctor(BepInEx.Logging.ManualLogSource)">
+            <summary>
+            
+            </summary>
+            <param name="logger"></param>
+        </member>
+        <member name="M:GHPluginCoreLib.GHPluginLogger.LogInfo(System.String)">
+            <summary>
+            Logs a message to the BepInEx debug console.
+            </summary>
+            <param name="msg"></param>
+        </member>
+        <member name="M:GHPluginCoreLib.GHPluginLogger.LogAllGameObjectData(UnityEngine.GameObject,System.Boolean,System.Collections.Generic.List{System.String})">
+            <summary>
+            Logs all properties of a GameObject by default. It can also be used to log
+            all properties of the GameObject and its children. The third parameter can be
+            used to specify which properties of the GameObjects being logged should not
+            be logged to the BepInEx debug console.
+            </summary>
+            <param name="gameObject"></param>
+            <param name="logDataOfAllChildGameObjects"></param>
+            <param name="propertyNamesFilter"></param>
+        </member>
+        <member name="M:GHPluginCoreLib.GHPluginLogger.LogSceneData(UnityEngine.SceneManagement.Scene,System.Boolean)">
+            <summary>
+            Logs all properties for a Scene in the game, the second parameter specifies whether
+            the properties of all GameObjects in the Scene should be logged as well.
+            </summary>
+            <param name="scene"></param>
+            <param name="logAllSceneObjectsData"></param>
+        </member>
+        <member name="M:GHPluginCoreLib.GHPluginLogger.LogActiveSceneData(System.Boolean)">
+            <summary>
+            Logs all properties for the currently active Scene in the game, the second
+            parameter specifies whether the properties of all GameObjects in the Scene
+            should be logged as well.
+            </summary>
+            <param name="logAllSceneObjectsData"></param>
+        </member>
+        <member name="M:GHPluginCoreLib.GHPluginLogger.LogGameObjectNameAndParent(UnityEngine.GameObject,System.Boolean)">
+            <summary>
+            Logs the name of a GameObject as well as the name of its parent, the second
+            parameter specifies whether the same should be done for the children of the
+            GameObject specified in the first parameter.
+            </summary>
+            <param name="gameObject"></param>
+            <param name="logChildObjects"></param>
+        </member>
+        <member name="M:GHPluginCoreLib.GHPluginLogger.LogSceneGameObjectsNameAndParent(UnityEngine.SceneManagement.Scene)">
+            <summary>
+            Logs the names of all the GameObjects in a Scene in the game as well as the names
+            of their parents.
+            </summary>
+            <param name="scene"></param>
+        </member>
+        <member name="M:GHPluginCoreLib.GHPluginLogger.LogActiveSceneGameObjectsNameAndParent">
+            <summary>
+            Logs the names of all the GameObjects in the currently active Scene in the game
+            as well as the names of their parents.
+            </summary>
+        </member>
+        <member name="M:GHPluginCoreLib.GHPluginLogger.LogFileSystem(FileSystem)">
+            <summary>
+            Logs the names of all the folders and files in a FileSystem instance.
+            </summary>
+            <param name="fileSystem"></param>
+        </member>
+        <member name="M:GHPluginCoreLib.GHPluginLogger.LogFolder(FileSystem.Carpeta)">
+            <summary>
+            Logs the name of the FileSystem.Carpeta instance specified in the first parameter
+            as well as the name of all its subfolders and files.
+            </summary>
+            <param name="folder"></param>
+        </member>
+        <member name="M:GHPluginCoreLib.GHPluginLogger.LogException(System.Exception)">
+            <summary>
+            Logs information about an exception, including its message and its stack trace.
+            </summary>
+            <param name="exception"></param>
+        </member>
+        <member name="T:GHPluginCoreLib.GHPluginUtilities">
+            <summary>
+            The GHPluginUtilities class exposes several helper methods for BepInEx plugin
+            developers to use.
+            </summary>
+        </member>
+        <member name="M:GHPluginCoreLib.GHPluginUtilities.GetComponentInGameObjectByName``1(UnityEngine.GameObject,System.String)">
+            <summary>
+            Returns the Component of one of the children of the GameObject specified in the
+            first parameter with the same name as the one specified in the second parameter.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="gameObject"></param>
+            <param name="componentName"></param>
+            <returns></returns>
+        </member>
+        <member name="T:GHPluginCoreLib.GreyOSProgram">
+            <summary>
+            The GreyOSProgram class is the class from which custom programs that are meant
+            to be run on a player's in-game computer must inherit from.
+            </summary>
+        </member>
+        <member name="F:GHPluginCoreLib.GreyOSProgram.programPrefab">
+            <summary>
+            The prefab associated with the program.
+            </summary>
+        </member>
+        <member name="F:GHPluginCoreLib.GreyOSProgram.programName">
+            <summary>
+            The name of the program.
+            </summary>
+        </member>
+        <member name="F:GHPluginCoreLib.GreyOSProgram.associatedFile">
+            <summary>
+            The file associated with the program, this field will automatically be assigned
+            to at runtime provided that the program has been registered with the
+            GreyOSProgramManager.
+            </summary>
+        </member>
+        <member name="M:GHPluginCoreLib.GreyOSProgram.#ctor(System.String,System.String,System.String)">
+            <summary>
+            The default constructor method for the GreyOSProgram class.
+            </summary>
+            <param name="programName"></param>
+            <param name="associatedAssetBundleFilePath"></param>
+            <param name="programPrefabName"></param>
+        </member>
+        <member name="M:GHPluginCoreLib.GreyOSProgram.#ctor(System.String,UnityEngine.GameObject)">
+            <summary>
+            A constructor for the GreyOSProgram class.
+            </summary>
+            <param name="programName"></param>
+            <param name="programPrefab"></param>
+        </member>
+        <member name="M:GHPluginCoreLib.GreyOSProgram.Procesar(System.String[],FileSystem.Archivo,System.Int32,Terminal)">
+            <summary>
+            This method can be overridden by the program's class provided that it
+            inherits from the GreyOSProgram class. This method is called when a player
+            opens the program either through the File Explorer or the Terminal.
+            </summary>
+            <param name="comando"></param>
+            <param name="currentFile"></param>
+            <param name="PID"></param>
+            <param name="terminal"></param>
+            <returns></returns>
+        </member>
+        <member name="T:GHPluginCoreLib.GreyOSProgramManager">
+            <summary>
+            The GreyOSProgramManager class is responsible for registering custom programs
+            with GreyOS, the operating system that a player's in-game computer runs on.
+            Programs registered with this class can be used through the in-game
+            computer.
+            </summary>
+        </member>
+        <member name="F:GHPluginCoreLib.GreyOSProgramManager.registeredGreyOSPrograms">
+            <summary>
+            Contains a list of all the programs registered with the GreyOSProgramManager
+            so far.
+            </summary>
+        </member>
+        <member name="M:GHPluginCoreLib.GreyOSProgramManager.#ctor">
+            <summary>
+            Default constructor for the GreyOSProgramManager class.
+            </summary>
+        </member>
+        <member name="M:GHPluginCoreLib.GreyOSProgramManager.RegisterProgram(GHPluginCoreLib.GreyOSProgram)">
+            <summary>
+            Registers a program with the GreyOSProgramManager.
+            </summary>
+            <param name="greyOSProgram"></param>
+        </member>
+        <member name="M:GHPluginCoreLib.GreyOSProgramManager.UnregisterProgram(GHPluginCoreLib.GreyOSProgram)">
+            <summary>
+            Unregisters a program from the GreyOSProgramManager.
+            </summary>
+            <param name="greyOSProgram"></param>
+        </member>
+        <member name="T:GHPluginCoreLib.GHPluginUnityUtilityLogger">
+            <summary>
+            The GHPluginUnityUtilityLogger class can be used to generate log files containing
+            comprehensive and detailed information about a Unity scene.
+            </summary>
+        </member>
+        <member name="M:GHPluginCoreLib.GHPluginUnityUtilityLogger.#ctor">
+            <summary>
+            Default constructor method for the GHPluginUnityUtilityLogger class.
+            </summary>
+        </member>
+        <member name="M:GHPluginCoreLib.GHPluginUnityUtilityLogger.GenerateUnitySceneLogFileForScene(UnityEngine.SceneManagement.Scene,System.String,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Generates a log file for the Unity scene specified in the first parameter.
+            </summary>
+            <param name="scene"></param>
+            <param name="outputPath"></param>
+            <param name="onlyLogActiveGameObjects"></param>
+            <param name="logAllComponentsData"></param>
+            <param name="logAllFieldsData"></param>
+            <param name="logAllPropertiesData"></param>
+            <param name="logAllMethodsData"></param>
+        </member>
+        <member name="M:GHPluginCoreLib.GHPluginUnityUtilityLogger.GenerateUnitySceneLogFileForActiveScene(System.String,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Generates a log file for the currently active Unity scene in the game.
+            </summary>
+            <param name="outputPath"></param>
+            <param name="onlyLogActiveGameObjects"></param>
+            <param name="logAllComponentsData"></param>
+            <param name="logAllFieldsData"></param>
+            <param name="logAllPropertiesData"></param>
+            <param name="logAllMethodsData"></param>
+        </member>
+        <member name="M:GHPluginCoreLib.GHPluginUnityUtilityLogger.GenerateUnitySceneLogFileForGameObject(UnityEngine.GameObject,System.String,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Generates a log file for the GameObject specified in the first parameter.
+            </summary>
+            <param name="gameObject"></param>
+            <param name="outputPath"></param>
+            <param name="onlyLogActiveGameObjects"></param>
+            <param name="logAllComponentsData"></param>
+            <param name="logAllFieldsData"></param>
+            <param name="logAllPropertiesData"></param>
+            <param name="logAllMethodsData"></param>
+        </member>
+    </members>
+</doc>

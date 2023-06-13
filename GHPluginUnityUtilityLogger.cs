@@ -14,10 +14,17 @@ using Jint.Parser;
 
 namespace GHPluginCoreLib
 {
+	/// <summary>
+	/// The GHPluginUnityUtilityLogger class can be used to generate log files containing
+	/// comprehensive and detailed information about a Unity scene.
+	/// </summary>
     public class GHPluginUnityUtilityLogger
     {
         private string currentLog = "";
 
+		/// <summary>
+		/// Default constructor method for the GHPluginUnityUtilityLogger class.
+		/// </summary>
         public GHPluginUnityUtilityLogger()
         {
 
@@ -283,6 +290,16 @@ namespace GHPluginCoreLib
             }
         }
 
+		/// <summary>
+		/// Generates a log file for the Unity scene specified in the first parameter.
+		/// </summary>
+		/// <param name="scene"></param>
+		/// <param name="outputPath"></param>
+		/// <param name="onlyLogActiveGameObjects"></param>
+		/// <param name="logAllComponentsData"></param>
+		/// <param name="logAllFieldsData"></param>
+		/// <param name="logAllPropertiesData"></param>
+		/// <param name="logAllMethodsData"></param>
         public void GenerateUnitySceneLogFileForScene(Scene scene, string outputPath, bool onlyLogActiveGameObjects, bool logAllComponentsData, bool logAllFieldsData, bool logAllPropertiesData, bool logAllMethodsData)
         {
             if (scene == null)
@@ -310,6 +327,15 @@ namespace GHPluginCoreLib
             File.WriteAllText(outputPath, this.currentLog);
         }
 
+		/// <summary>
+		/// Generates a log file for the currently active Unity scene in the game.
+		/// </summary>
+		/// <param name="outputPath"></param>
+		/// <param name="onlyLogActiveGameObjects"></param>
+		/// <param name="logAllComponentsData"></param>
+		/// <param name="logAllFieldsData"></param>
+		/// <param name="logAllPropertiesData"></param>
+		/// <param name="logAllMethodsData"></param>
         public void GenerateUnitySceneLogFileForActiveScene(string outputPath, bool onlyLogActiveGameObjects, bool logAllComponentsData, bool logAllFieldsData, bool logAllPropertiesData, bool logAllMethodsData)
         {
             this.GenerateUnitySceneLogFileForScene(
@@ -323,6 +349,16 @@ namespace GHPluginCoreLib
 			);
         }
 
+		/// <summary>
+		/// Generates a log file for the GameObject specified in the first parameter.
+		/// </summary>
+		/// <param name="gameObject"></param>
+		/// <param name="outputPath"></param>
+		/// <param name="onlyLogActiveGameObjects"></param>
+		/// <param name="logAllComponentsData"></param>
+		/// <param name="logAllFieldsData"></param>
+		/// <param name="logAllPropertiesData"></param>
+		/// <param name="logAllMethodsData"></param>
         public void GenerateUnitySceneLogFileForGameObject(GameObject gameObject, string outputPath, bool onlyLogActiveGameObjects, bool logAllComponentsData, bool logAllFieldsData, bool logAllPropertiesData, bool logAllMethodsData)
         {
             this.ClearLog();
