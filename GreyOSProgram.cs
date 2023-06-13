@@ -15,9 +15,11 @@ namespace GHPluginCoreLib
 {
     public class GreyOSProgram : ProgramWindow
     {
-        public string programName = "DefaultGreyOSProgram";
-
         protected GameObject programPrefab = null;
+
+		public string programName = "DefaultGreyOSProgram";
+
+        public FileSystem.Archivo associatedFile = null;
 
 		private void InitGreyOSProgramPrefabFromAssetBundle(string associatedAssetBundleFilePath, string programPrefabName)
 		{

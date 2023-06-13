@@ -16,7 +16,7 @@ namespace GHPluginCoreLib
 
 		public GHPluginLogger(string sourceName = "GH Plugin Logger")
 		{
-			this.logger = new ManualLogSource(sourceName);
+			this.logger = BepInEx.Logging.Logger.CreateLogSource(sourceName);
 		}
 
 		public GHPluginLogger(ManualLogSource logger)

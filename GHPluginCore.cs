@@ -14,6 +14,7 @@ using Component = UnityEngine.Component;
 using System.Reflection;
 using System.Collections.ObjectModel;
 using System.CodeDom;
+using static Miniscript.Intrinsic;
 
 namespace GHPluginCoreLib
 {
@@ -36,7 +37,7 @@ namespace GHPluginCoreLib
 
 		private void ApplyPatchWithPatchType(MethodInfo targetMethodInfo, MethodInfo patchMethodInfo, PatchTypes patchType)
 		{
-			Debug.Log("Patching " + targetMethodInfo.Name);
+			this.logger.LogInfo("Patching " + targetMethodInfo.Name);
 
 			switch (patchType)
 			{
@@ -75,6 +76,8 @@ namespace GHPluginCoreLib
 				default:
 					break;
 			}
+
+			this.logger.LogInfo("Patched " + targetMethodInfo.Name);
 		}
 
         private void ApplyPatch(MethodInfo targetMethodInfo, MethodInfo patchMethodInfo, PatchTypes patchType)
@@ -145,99 +148,101 @@ namespace GHPluginCoreLib
 		private void ApplyCorePatches()
         {
 			this.ApplyPatch(
-					AccessTools.Method(
-						typeof(Ventana),
-						"Awake"
-					),
-					AccessTools.Method(
-						typeof(VentanaPatcher),
-						"Awake_PrefixPatch",
-						new Type[]
-						{
-							typeof(Ventana)
-						}
-					),
-					PatchTypes.Prefix
-				);
+				AccessTools.Method(
+					typeof(Ventana),
+					nameof(Ventana.Awake)
+				),
+				AccessTools.Method(
+					typeof(VentanaPatcher),
+					nameof(VentanaPatcher.Awake_PrefixPatch),
+					new Type[]
+					{
+						typeof(Ventana)
+					}
+				),
+				PatchTypes.Prefix
+			);
 
 			this.ApplyPatch(
-					AccessTools.Method(
-						typeof(Terminal),
-						"InicializarComandos"
-					),
-					AccessTools.Method(
-						typeof(TerminalPatcher),
-						"InicializarComandos_PostfixPatch",
-						new Type[]
-						{
-							typeof(Terminal)
-						}
-					),
-					PatchTypes.Postfix
-				);
+				AccessTools.Method(
+					typeof(Terminal),
+					nameof(Terminal.InicializarComandos)
+				),
+				AccessTools.Method(
+					typeof(TerminalPatcher),
+					nameof(TerminalPatcher.InicializarComandos_PostfixPatch),
+					new Type[]
+					{
+						typeof(Terminal)
+					}
+				),
+				PatchTypes.Postfix
+			);
 
 			this.ApplyPatch(
-					AccessTools.Method(
-						typeof(PlayerServerMethods),
-						"PrepareCommandServerRpc",
-						new Type[]
-						{
-							typeof(string),
-							typeof(byte[]),
-							typeof(string),
-							typeof(string),
-							typeof(int),
-							typeof(int),
-							typeof(int),
-							typeof(bool)
-						}
-					),
-					AccessTools.Method(
-						typeof(PlayerServerMethodsPatcher),
-						"PrepareCommandServerRpc_PrefixPatch",
-						new Type[]
-						{
-							typeof(string),
-							typeof(byte[]),
-							typeof(string),
-							typeof(string),
-							typeof(int),
-							typeof(int),
-							typeof(int),
-							typeof(bool),
-							typeof(PlayerServerMethods)
-						}
-					),
-					PatchTypes.Prefix
-				);
+				AccessTools.Method(
+					typeof(PlayerServerMethods),
+					nameof(PlayerServerMethods.PrepareCommandServerRpc),
+					new Type[]
+					{
+						typeof(string),
+						typeof(byte[]),
+						typeof(string),
+						typeof(string),
+						typeof(int),
+						typeof(int),
+						typeof(int),
+						typeof(bool)
+					}
+				),
+				AccessTools.Method(
+					typeof(PlayerServerMethodsPatcher),
+					nameof(PlayerServerMethodsPatcher.PrepareCommandServerRpc_PrefixPatch),
+					new Type[]
+					{
+						typeof(string),
+						typeof(byte[]),
+						typeof(string),
+						typeof(string),
+						typeof(int),
+						typeof(int),
+						typeof(int),
+						typeof(bool),
+						typeof(PlayerServerMethods)
+					}
+				),
+				PatchTypes.Prefix
+			);
 
 			this.ApplyPatch(
-					AccessTools.Method(
-						typeof(PlayerServerMethods),
-						"UserLogin",
-						new Type[]
-						{
-							typeof(ulong),
-							typeof(bool)
-						}
-					),
-					AccessTools.Method(
-						typeof(PlayerServerMethodsPatcher),
-						"UserLogin_PostfixPatch",
-						new Type[]
-						{
-							typeof(ulong),
-							typeof(bool),
-							typeof(PlayerServerMethods)
-						}
-					),
-					PatchTypes.Postfix
-				);
+				AccessTools.Method(
+					typeof(PlayerServerMethods),
+					nameof(PlayerServerMethods.UserLogin),
+					new Type[]
+					{
+						typeof(ulong),
+						typeof(bool)
+					}
+				),
+				AccessTools.Method(
+					typeof(PlayerServerMethodsPatcher),
+					nameof(PlayerServerMethodsPatcher.UserLogin_PostfixPatch),
+					new Type[]
+					{
+						typeof(ulong),
+						typeof(bool),
+						typeof(PlayerServerMethods)
+					}
+				),
+				PatchTypes.Postfix
+			);
 		}
 
 		public void Init()
 		{
             this.ApplyCorePatches();
+
+			this.logger.LogInfo("All methods patched successfully.");
 		}
 
 		/*

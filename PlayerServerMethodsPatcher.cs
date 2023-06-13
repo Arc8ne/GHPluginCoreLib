@@ -6,6 +6,7 @@ using HarmonyLib;
 using NetworkMessages;
 using Util;
 using Newtonsoft.Json;
+using UnityEngine;
 
 namespace GHPluginCoreLib
 {
@@ -210,13 +211,25 @@ namespace GHPluginCoreLib
 		{
 			GHPluginCore.instance.logger.LogInfo("Initiating GreyOSProgram filesystem registration procedure...");
 
+			Computer.User playerUser = null;
+
+			foreach(Computer.User user in __instance.pc.users)
+			{
+				if (user.nombreUsuario != "guest" && user.nombreUsuario != "root")
+				{
+					playerUser = user;
+
+					break;
+				}
+			}
+
 			foreach (GreyOSProgram registeredGreyOSProgram in GHPluginCore.instance.greyOSProgramManager.registeredGreyOSPrograms)
 			{
 				GHPluginCore.instance.logger.LogInfo("Registration started for GreyOSProgram with name: " + registeredGreyOSProgram.programName);
 
 				try
 				{
-					FileSystem.Archivo greyOSProgramFile = (FileSystem.Archivo)AccessTools.CreateInstance(typeof(FileSystem.Archivo));
+					FileSystem.Archivo greyOSProgramFile = new FileSystem.Archivo();
 
 					greyOSProgramFile.SetNombre(
 						registeredGreyOSProgram.programName.Replace(" ", "") + ".exe"
@@ -238,10 +251,25 @@ namespace GHPluginCoreLib
 
 					greyOSProgramFile.precio = 0;
 
+					if (playerUser != null)
+					{
+						greyOSProgramFile.owner = playerUser.nombreUsuario;
+
+						greyOSProgramFile.group = playerUser.nombreUsuario;
+					}
+					else
+					{
+						greyOSProgramFile.owner = "";
+
+						greyOSProgramFile.group = "";
+					}
+
 					__instance.pc.GetFileSystem().AddFileRef(
 						greyOSProgramFile,
 						"/usr/bin"
 					);
+
+					registeredGreyOSProgram.associatedFile = greyOSProgramFile;
 				}
 				catch (Exception exception)
 				{
